@@ -1,0 +1,36 @@
+#In this SQL, I'm querying a database with multiple tables in it to quantify statistics about the top 50 most listened songs in the world for year 2021 in Spotify. 
+
+#1. What is the average danceability by artist and track? 
+
+SELECT artist_name, track_name, AVG(danceability)
+FROM BIT_DB.spotifydata
+GROUP BY id ORDER BY danceability;
+
+#2. Who are the top 10 artists based on popularity?
+
+SELECT artist_name, popularity
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc 
+LIMIT 10;
+
+#3. What artist released the longest song?
+
+SELECT artist_name, MAX(duration_ms)
+FROM BIT_DB.Spotifydata
+LIMIT 1;
+
+#4. What's the average danceability for the 10 most popular songs?
+
+SELECT track_name, popularity, AVG(danceability)
+FROM BIT_DB.spotifydata
+GROUP BY track_name ORDER BY popularity desc
+LIMIT 10;
+
+#5. Calculate the average popularity for the artists in the Spotify data table. 
+Then, for every artist with an average popularity of 90 or above, show their name, their average popularity, and label them as a “Top Star”.
+
+WITH popularity_CTE AS (SELECT artist_name, AVG(popularity) AS average_popularity
+FROM spotifydata GROUP BY artist_name)
+SELECT artist_name, average_popularity, 'top star' as tag FROM popularity_CTE 
+WHERE average_popularity >= 90;
+
