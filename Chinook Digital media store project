@@ -1,0 +1,44 @@
+#In this SQL, I'm querying a database called chinook, which represents a digital media store, with multiple tables in it to quantify statistics about artists, albums, media tracks, invoices, and customers.. 
+
+
+#1. Show Customers (their full names, customer ID, and country) who are not in the US. (Hint: != or <> can be used to say "is not equal to").
+SELECT * FROM chinook.customers
+WHERE country<> 'US';
+
+#2. Show only the Customers from Brazil.
+SELECT * FROM chinook.customers
+WHERE country ='Brazil';
+
+#3. Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country. 
+SELECT *
+FROM chinook.customers c
+JOIN chinook.invoices i
+ON i.customerid=c.customerid
+WHERE country = 'Brazil';
+
+#4. Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+SELECT e.firstname, e.lastname, v.invoiceid
+FROM chinook.employees e
+JOIN chinook.customers c
+ON c.SupportRepId = e.EmployeeId
+JOIN chinook.invoices v
+ON v.customerid= c.CustomerId;
+
+#5. Write a query that includes the purchased track name with each invoice line ID.
+SELECT t.Name, i.InvoiceLineId
+FROM chinook.Invoice_items i
+JOIN chinook.Tracks t 
+ON i.TrackId = t.TrackId
+
+#6. Write a query that includes the purchased track name AND artist name with each invoice line ID.
+SELECT a.name AS artist, t.Name AS Track, i.InvoiceLineId
+FROM chinook.Invoice_items i
+JOIN chinook.Tracks t 
+ON i.TrackId = t.TrackId
+JOIN chinook.albums al
+ON al.albumid=t.albumid
+JOIN chinook.artists a
+ON a.artistid=al.artistid;
+
+
+
